@@ -6,7 +6,7 @@
                     <h1>Clientes</h1>
                 </div>
                 <div>
-                    <el-table ref="singleTable" :data="customers" style="width: 100%" highlight-current-row @current-change="handleCurrentChange">
+                    <el-table ref="singleTable" :data="customers" style="width: 97%" highlight-current-row @current-change="handleCurrentChange">
                         <el-table-column
                             prop="type"
                             label="Tipo"
@@ -38,12 +38,39 @@
                 </div>
             </el-col>
             <el-col :span="4">
-                <div>
-                    <h2>Estadísticas</h2>
-                </div>
-                <div>
-                    <span v-if="finded">{{ currentStadistic.total_pedidos }}</span>
-                </div>
+                <div class="stadistic-section">
+                    <div class="stadistic-title">
+                        <span>RESUMEN</span>
+                    </div>
+                    <div class="stadistic-item">
+                        <span class="stadistic stadistic-item-title">Total de pedidos</span>
+                        <span v-if="finded" class="stadistic stadistic-item-number">{{ currentStadistic.total_pedidos }}</span>
+                    </div>
+                    <div class="stadistic-item">
+                        <span class="stadistic stadistic-item-title">Bidones no devueltos</span>
+                        <span v-if="finded" class="stadistic stadistic-item-number">{{ currentStadistic.bidones_no_devueltos }}</span>
+                    </div>
+                    <div class="stadistic-item">
+                        <span class="stadistic stadistic-item-title">Saldo a favor</span>
+                        <span v-if="finded" class="stadistic stadistic-item-number">{{ currentStadistic.saldo_favor }}</span>
+                    </div>
+                    <div class="stadistic-item">
+                        <span class="stadistic stadistic-item-title">Deuda</span>
+                        <span v-if="finded" class="stadistic stadistic-item-number">{{ currentStadistic.deuda }}</span>
+                    </div>
+                    <div class="stadistic-item">
+                        <span class="stadistic stadistic-item-title">Pedidos en la semana</span>
+                        <span v-if="finded" class="stadistic stadistic-item-number">{{ currentStadistic.pedidos_semana }}</span>
+                    </div>
+                    <div class="stadistic-item">
+                        <span class="stadistic stadistic-item-title">Pedidos en el mes</span>
+                        <span v-if="finded" class="stadistic stadistic-item-number">{{ currentStadistic.pedidos_mes }}</span>
+                    </div>
+                    <div class="stadistic-item">
+                        <span class="stadistic stadistic-item-title">Pedidos cancelados</span>
+                        <span v-if="finded" class="stadistic stadistic-item-number">{{ currentStadistic.pedidos_cancelados }}</span>
+                    </div>
+                </div>                
             </el-col>
         </el-row>
     </div>
@@ -86,7 +113,7 @@ export default {
                     deuda: 120,
                     pedidos_semana: 10,
                     pedidos_mes: 250,
-                    pedidos_cancelados: 5,
+                    pedidos_cancelados: 8,
                     ranking: 5
                 },
                 {
@@ -124,5 +151,39 @@ export default {
   }
 .bg-purple {
     background: #d3dce6;
+  }
+
+  .stadistic-section{
+      background-color: #DBEAF1;
+      padding: 10px;
+      border-radius: 5px;
+      height: 100%;
+  }
+
+  .stadistic-title{
+      color: #035D8F;
+      font-size: .9em;
+      margin-bottom: 15px;
+  }
+
+  .stadistic{
+      padding: 3px;
+      text-align: left;
+  }
+
+  .stadistic-item{
+      margin-bottom: 12px;
+  }
+
+  .stadistic-item-title{
+      display: block;
+      font-size: .8em;
+      font-weight: 500;
+  }
+
+  .stadistic-item-number{
+      display: block;
+      font-weight: bold;
+      font-size: 1.3em;
   }
 </style>
