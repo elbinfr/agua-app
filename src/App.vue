@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-container>
-    <el-aside width="70px">
+    <el-aside width="65px">
       <Sidebar/>
     </el-aside>
     <el-container>
@@ -29,7 +29,7 @@ export default {
 
 <style>
 #app {
-  font-family: 'Lato', sans-serif;
+  font-family: GhotamClara;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;

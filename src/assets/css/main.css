@@ -1,0 +1,63 @@
+@font-face {
+    font-family: GhotamClara;
+    src: url('../fonts/Gotham-Light_0.otf');
+}
+
+@font-face {
+    font-family: GhotamMediana;
+    src: url('../fonts/Gotham-Medium_0.otf');
+}
+
+body{
+    font-family: GhotamClara;
+}
+
+.negrita{
+    font-family: GhotamMediana;
+}
+
+.title-section{
+    font-size: 1.5em;
+}
+
+.el-header{
+    height: 30px !important;
+    border-bottom: solid 1px #E6E6E6;
+}
+
+.el-main{
+    padding: 5px 20px !important;
+}
+
+.button-new{
+    font-family: GhotamClara;
+    float: right;
+    margin-right: 50px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #5C73F2;
+}
+
+.button-new > i {
+    font-weight: bold;
+    color: #5C73F2;
+}
+
+.float-r{
+    float: right;
+}
+
+.form-new{
+    padding: 0 15px;
+}
+
+.el-drawer__header{
+    margin-bottom: 15px;
+    padding: 10px 10px;
+    background-color: #409EFF;
+    color: #fff;
+    text-align: center;
+}

@@ -3,7 +3,12 @@
         <el-row>
             <el-col :span="20">
                 <div>
-                    <h1>Clientes</h1>
+                    <h1 class="negrita title-section">
+                        Clientes
+                        <button class="button-new"  @click="drawer = true">
+                            <i class="el-icon-plus"></i> Nuevo Cliente
+                        </button>
+                    </h1>
                 </div>
                 <div>
                     <el-table ref="singleTable" :data="customers" style="width: 97%" highlight-current-row @current-change="handleCurrentChange">
@@ -73,6 +78,48 @@
                 </div>                
             </el-col>
         </el-row>
+        <el-drawer
+            title="Registro de nuevo cliente"
+            :visible.sync="drawer"
+            :direction="direction"
+            size="40%">
+            <div class="form-new">
+                <el-form label-width="130px">
+                    <el-form-item label="Tipo">
+                        <el-select v-model="customers.type" placeholder="Seleccione el tipo de cliente">
+                            <el-option label="Jurídico" value="Jurídico"></el-option>
+                            <el-option label="Natural" value="Natural"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="Nombre">
+                        <el-input v-model="customers.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="DNI">
+                        <el-input v-model="customers.document"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Dirección">
+                        <el-input v-model="customers.address"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Teléfono">
+                        <el-input v-model="customers.font"></el-input>
+                    </el-form-item>
+                    <el-form-item label="E-mail">
+                        <el-input v-model="customers.email"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Linea de crédito">
+                        <el-input v-model="customers.line_credit"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Descuento">
+                        <el-input v-model="customers.discount"></el-input>
+                    </el-form-item>
+                    <div class="demo-drawer__footer float-r">
+                        <el-button>Cancelar</el-button>
+                        <el-button type="primary" @click="addCustomer">Registrar</el-button>
+                    </div>
+                </el-form>
+                
+            </div>
+        </el-drawer>
     </div>
 </template>
 
@@ -80,6 +127,8 @@
 export default {
     data () {
         return {
+            drawer: false,
+            direction: 'rtl',
             customers: [{
                     id: 1,
                     type: 'Jurídico',
@@ -140,7 +189,29 @@ export default {
         this.currentRow = val;
         this.finded = true;
         this.currentStadistic = this.stadistics.find(stadistic => stadistic.customer_id == this.currentRow.id);
-      }
+      },
+      addCustomer: function (e) {
+            e.preventDefault();
+            this.customers.push({
+                type: this.customers.type,
+                name: this.customers.name,
+                document: this.customers.document,
+                address: this.customers.address,
+                phone: this.customers.phone,
+                email: this.customers.email,
+                line_credit: this.customers.line_credit,
+                discount: this.customers.discount,
+            });
+            this.customers.type = '';
+            this.customers.name = '';
+            this.customers.document = '';
+            this.customers.address = '';
+            this.customers.phone = '';
+            this.customers.email = '';
+            this.customers.line_credit = '';
+            this.customers.discount = '';
+            this.drawer = false;
+        },
     }
 }
 </script>
@@ -161,9 +232,10 @@ export default {
   }
 
   .stadistic-title{
-      color: #035D8F;
+      color: #5C73F2;
       font-size: .9em;
       margin-bottom: 15px;
+      margin-top: 25px;
   }
 
   .stadistic{
