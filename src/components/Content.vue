@@ -11,7 +11,9 @@
                     </h1>
                 </div>
                 <div>
-                    <el-table ref="singleTable" :data="customers" style="width: 97%" highlight-current-row @current-change="handleCurrentChange">
+                    <el-table ref="singleTable" :data="customers" style="width: 97%" highlight-current-row 
+                    @current-change="handleCurrentChange"
+                    @expand-change="handleExpandChange">
                         <el-table-column
                             prop="type"
                             label="Tipo"
@@ -33,10 +35,12 @@
                         </el-table-column>
                         <el-table-column type="expand">
                             <template slot-scope="props">
-                                <h4>Ordenes</h4>
-                                <p>Documento: {{ props.row.document }}</p>
-                                <p>Nombre: {{ props.row.name }}</p>
-                                <p>Dirección: {{ props.row.address }}</p>
+                                <div class="detail-orders sombra">
+                                    <h4>Ordenes</h4>
+                                    <p>Documento: {{ props.row.document }}</p>
+                                    <p>Nombre: {{ props.row.name }}</p>
+                                    <p>Dirección: {{ props.row.address }}</p>
+                                </div>                                
                             </template>
                         </el-table-column>
                     </el-table>
@@ -189,6 +193,10 @@ export default {
         this.currentRow = val;
         this.finded = true;
         this.currentStadistic = this.stadistics.find(stadistic => stadistic.customer_id == this.currentRow.id);
+      },
+      handleExpandChange(row, expandedRows){
+        alert(row);
+        alert(expandedRows);
       },
       addCustomer: function (e) {
             e.preventDefault();
