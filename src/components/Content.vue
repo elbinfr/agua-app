@@ -11,35 +11,54 @@
                     </h1>
                 </div>
                 <div>
+                    <span class="label-activos">ACTIVOS</span>
                     <el-table ref="singleTable" :data="customers" style="width: 97%" highlight-current-row 
-                    @current-change="handleCurrentChange"
-                    @expand-change="handleExpandChange">
+                    @current-change="handleCurrentChange">
                         <el-table-column
                             prop="type"
                             label="Tipo"
-                            width="180">
+                            width="90">
                         </el-table-column>
                         <el-table-column
                             prop="name"
-                            label="Nombre"
-                            width="180">
+                            label="Nombre">
                         </el-table-column>
                         <el-table-column
                             prop="document"
-                            label="Documento"
-                            width="180">
+                            label="Documento">
                         </el-table-column>
                         <el-table-column
                             prop="address"
                             label="Dirección">
                         </el-table-column>
+                        <el-table-column
+                            prop="phone"
+                            label="Teléfono"
+                            width="110">
+                        </el-table-column>
+                        <el-table-column
+                            prop="email"
+                            label="E-mail">
+                        </el-table-column>
+                        <el-table-column
+                            prop="line_credit"
+                            label="Linea de crédito"
+                            width="135">
+                        </el-table-column>
                         <el-table-column type="expand">
                             <template slot-scope="props">
                                 <div class="detail-orders sombra">
-                                    <h4>Ordenes</h4>
-                                    <p>Documento: {{ props.row.document }}</p>
-                                    <p>Nombre: {{ props.row.name }}</p>
-                                    <p>Dirección: {{ props.row.address }}</p>
+                                    <span class="detail-title">Ordenes</span>
+                                    <table class="order-detail">
+                                        <tbody>
+                                            <tr v-for="item in props.row.orders" v-bind:key="item.number">
+                                                <td>{{ item.number }}</td>
+                                                <td> S/ {{ item.amount }}</td>
+                                                <td>{{ item.date }}</td>
+                                                <td><span :class="item.status.toLowerCase()">{{ item.status }}</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>                                
                             </template>
                         </el-table-column>
@@ -117,7 +136,7 @@
                         <el-input v-model="customers.discount"></el-input>
                     </el-form-item>
                     <div class="demo-drawer__footer float-r">
-                        <el-button>Cancelar</el-button>
+                        <el-button @click="drawer = false">Cancelar</el-button>
                         <el-button type="primary" @click="addCustomer">Registrar</el-button>
                     </div>
                 </el-form>
@@ -142,7 +161,27 @@ export default {
                     phone: '987300897',
                     email: 'elbingr@gmail.com',
                     line_credit: 200,
-                    discount: 10
+                    discount: 10,
+                    orders: [
+                        {
+                            number: '#00100',
+                            amount: 120.00,
+                            date: '09/12/2019',
+                            status: 'Registrado'
+                        },
+                        {
+                            number: '#00099',
+                            amount: 100.00,
+                            date: '08/12/2019',
+                            status: 'Pagado'
+                        },
+                        {
+                            number: '#00098',
+                            amount: 80.00,
+                            date: '07/12/2019',
+                            status: 'Entregado'
+                        }
+                    ]
                 },
                 {
                     id: 2,
@@ -153,7 +192,27 @@ export default {
                     phone: '987300897',
                     email: 'abi@gmail.com',
                     line_credit: 200,
-                    discount: 10
+                    discount: 10,
+                    orders: [
+                        {
+                            number: '#00089',
+                            amount: 50.00,
+                            date: '09/12/2019',
+                            status: 'Registrado'
+                        },
+                        {
+                            number: '#00088',
+                            amount: 100.00,
+                            date: '08/12/2019',
+                            status: 'Pagado'
+                        },
+                        {
+                            number: '#00098',
+                            amount: 80.00,
+                            date: '07/12/2019',
+                            status: 'Entregado'
+                        }
+                    ]
                 }
             ],
             currentRow: null,
@@ -193,10 +252,6 @@ export default {
         this.currentRow = val;
         this.finded = true;
         this.currentStadistic = this.stadistics.find(stadistic => stadistic.customer_id == this.currentRow.id);
-      },
-      handleExpandChange(row, expandedRows){
-        alert(row);
-        alert(expandedRows);
       },
       addCustomer: function (e) {
             e.preventDefault();
@@ -241,9 +296,10 @@ export default {
 
   .stadistic-title{
       color: #5C73F2;
-      font-size: .9em;
       margin-bottom: 15px;
       margin-top: 25px;
+      font-weight: 800;
+    font-size: .8em;
   }
 
   .stadistic{
