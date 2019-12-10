@@ -26,5 +26,16 @@ export default {
 </script>
 
 <style>
+.el-menu{
+    min-height: 100vh;
+    background-color: #409EFF;
+}
 
+.el-menu > li > div > i {
+    color: #FFFFFF;
+}
+
+.el-menu > li > div > i:hover {
+    color: #409EFF;
+}
 </style>

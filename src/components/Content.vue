@@ -155,7 +155,7 @@ export default {
             customers: [{
                     id: 1,
                     type: 'Jurídico',
-                    name: 'Elbin',
+                    name: 'Elbin Flores',
                     document: '44957819',
                     address: 'Pj 20 de setiembre #214',
                     phone: '987300897',
@@ -186,11 +186,11 @@ export default {
                 {
                     id: 2,
                     type: 'Natural',
-                    name: 'Abigail',
+                    name: 'Juan Perez',
                     document: '42957819',
                     address: 'Av. america 200999',
                     phone: '987300897',
-                    email: 'abi@gmail.com',
+                    email: 'juan@gmail.com',
                     line_credit: 200,
                     discount: 10,
                     orders: [
@@ -290,8 +290,7 @@ export default {
   .stadistic-section{
       background-color: #DBEAF1;
       padding: 10px;
-      border-radius: 5px;
-      height: 100%;
+      min-height: 90vh;
   }
 
   .stadistic-title{
