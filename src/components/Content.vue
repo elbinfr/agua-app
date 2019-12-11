@@ -12,54 +12,85 @@
                 </div>
                 <div>
                     <span class="label-activos">ACTIVOS</span>
-                    <el-table ref="singleTable" :data="customers" style="width: 97%" highlight-current-row 
-                    @current-change="handleCurrentChange">
+                    <el-table ref="singleTable" :data="customers" style="width: 97%" highlight-current-row stripe
+                    @current-change="handleCurrentChange"
+                    @expand-change="handleExpandChange" class="table-clientes">
                         <el-table-column
                             prop="type"
                             label="Tipo"
-                            width="90">
-                        </el-table-column>
+                            width="90" class-name="cell-cliente">
+                        </el-table-column>                        
                         <el-table-column
                             prop="name"
-                            label="Nombre">
+                            label="Nombre" class-name="cell-cliente">
+                        </el-table-column>
+                        <el-table-column
+                            label="Rating" class-name="cell-cliente">
+                            <template slot-scope="scope">
+                                <i :class="'el-icon-star-on rating ' + scope.row.clasification"></i>
+                                <span style="margin-left: 10px">{{ scope.row.rating }}</span>
+                            </template>                            
+                        </el-table-column>
+                        <el-table-column
+                            prop="type_document"
+                            label="T. Documento" class-name="cell-cliente">
                         </el-table-column>
                         <el-table-column
                             prop="document"
-                            label="Documento">
+                            label="Documento" class-name="cell-cliente">
                         </el-table-column>
                         <el-table-column
                             prop="address"
-                            label="Dirección">
+                            label="Dirección" class-name="cell-cliente">
                         </el-table-column>
                         <el-table-column
                             prop="phone"
                             label="Teléfono"
-                            width="110">
+                            width="110" class-name="cell-cliente">
                         </el-table-column>
                         <el-table-column
                             prop="email"
-                            label="E-mail">
+                            label="E-mail" class-name="cell-cliente">
                         </el-table-column>
                         <el-table-column
                             prop="line_credit"
-                            label="Linea de crédito"
-                            width="135">
+                            label="Crédito"
+                            width="135" class-name="cell-cliente">
                         </el-table-column>
                         <el-table-column type="expand">
                             <template slot-scope="props">
-                                <div class="detail-orders sombra">
-                                    <span class="detail-title">Ordenes</span>
-                                    <table class="order-detail">
-                                        <tbody>
-                                            <tr v-for="item in props.row.orders" v-bind:key="item.number">
-                                                <td>{{ item.number }}</td>
-                                                <td> S/ {{ item.amount }}</td>
-                                                <td>{{ item.date }}</td>
-                                                <td><span :class="item.status.toLowerCase()">{{ item.status }}</span></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>                                
+                                <div class="sombra">
+                                    <div class="detail-orders">
+                                        <span class="detail-title">Ordenes</span>
+                                        <table class="order-detail">
+                                            <tbody>
+                                                <tr v-for="item in props.row.orders" v-bind:key="item.number" @click="getProducts(item.number)">
+                                                    <td>{{ item.number }}</td>
+                                                    <td> S/ {{ item.amount }}</td>
+                                                    <td>{{ item.date }}</td>
+                                                    <td><span :class="item.status.toLowerCase()">{{ item.status }}</span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="products" v-if="viewProduct">
+                                        <div><span class="detail-products-title">{{ titleProducts }}</span></div>                                        
+                                        <div class="detail-products">
+                                            <el-row :gutter="10">
+                                                <el-col :span="6" v-for="product in products" v-bind:key="product.id" class="detail-product-item">
+                                                    <el-badge :value="product.quantity" class="item">
+                                                        <el-card class="box-card" shadow="never" > 
+                                                            <img :src="product.image" class="image">
+                                                            <div class="text-center">
+                                                                <span>{{ product.name }}</span>
+                                                            </div>
+                                                        </el-card>
+                                                    </el-badge>                         
+                                                </el-col>
+                                            </el-row>
+                                        </div>                                        
+                                    </div>
+                                </div>                                                          
                             </template>
                         </el-table-column>
                     </el-table>
@@ -156,12 +187,15 @@ export default {
                     id: 1,
                     type: 'Jurídico',
                     name: 'Elbin Flores',
-                    document: '44957819',
+                    type_document: 'RUC',
+                    document: '12345678901',
                     address: 'Pj 20 de setiembre #214',
                     phone: '987300897',
                     email: 'elbingr@gmail.com',
                     line_credit: 200,
                     discount: 10,
+                    rating: 10,
+                    clasification: 'gold',
                     orders: [
                         {
                             number: '#00100',
@@ -187,12 +221,15 @@ export default {
                     id: 2,
                     type: 'Natural',
                     name: 'Juan Perez',
+                    type_document: 'DNI',
                     document: '42957819',
                     address: 'Av. america 200999',
                     phone: '987300897',
                     email: 'juan@gmail.com',
                     line_credit: 200,
                     discount: 10,
+                    rating: 4,
+                    clasification: 'silver',
                     orders: [
                         {
                             number: '#00089',
@@ -241,7 +278,83 @@ export default {
                 }
             ],
             currentStadistic: null,
-            finded: false
+            finded: false,
+            viewProduct: false,
+            titleProducts: '',
+            products: [
+                {
+                    id: 1,
+                    name: 'Bidón',
+                    quantity: 2,
+                    image: 'images/products/producto1.jpg'
+                },
+                {
+                    id: 2,
+                    name: 'Laptop',
+                    quantity: 1,
+                    image: 'images/products/producto2.jpg'
+                },
+                {
+                    id: 3,
+                    name: 'Teclado',
+                    quantity: 3,
+                    image: 'images/products/producto3.jpg'
+                },
+                {
+                    id: 1,
+                    name: 'Bidón',
+                    quantity: 2,
+                    image: 'images/products/producto1.jpg'
+                },
+                {
+                    id: 2,
+                    name: 'Laptop',
+                    quantity: 1,
+                    image: 'images/products/producto2.jpg'
+                },
+                {
+                    id: 3,
+                    name: 'Teclado',
+                    quantity: 3,
+                    image: 'images/products/producto3.jpg'
+                },
+                {
+                    id: 1,
+                    name: 'Bidón',
+                    quantity: 2,
+                    image: 'images/products/producto1.jpg'
+                },
+                {
+                    id: 2,
+                    name: 'Laptop',
+                    quantity: 1,
+                    image: 'images/products/producto2.jpg'
+                },
+                {
+                    id: 3,
+                    name: 'Teclado',
+                    quantity: 3,
+                    image: 'images/products/producto3.jpg'
+                },
+                {
+                    id: 1,
+                    name: 'Bidón',
+                    quantity: 2,
+                    image: 'images/products/producto1.jpg'
+                },
+                {
+                    id: 2,
+                    name: 'Laptop',
+                    quantity: 1,
+                    image: 'images/products/producto2.jpg'
+                },
+                {
+                    id: 3,
+                    name: 'Teclado',
+                    quantity: 3,
+                    image: 'images/products/producto3.jpg'
+                }
+            ]
         }        
     },
     methods: {
@@ -252,6 +365,9 @@ export default {
         this.currentRow = val;
         this.finded = true;
         this.currentStadistic = this.stadistics.find(stadistic => stadistic.customer_id == this.currentRow.id);
+      },
+      handleExpandChange(){
+          this.viewProduct = false;
       },
       addCustomer: function (e) {
             e.preventDefault();
@@ -275,6 +391,10 @@ export default {
             this.customers.discount = '';
             this.drawer = false;
         },
+        getProducts: function(orderNumber){
+            this.viewProduct = true;
+            this.titleProducts = 'Productos en orden ' + orderNumber;
+        }
     }
 }
 </script>
@@ -312,13 +432,15 @@ export default {
 
   .stadistic-item-title{
       display: block;
-      font-size: .8em;
-      font-weight: 500;
+      font-size: .9em;
+      font-weight: bold;
+      color: #6E6B6B;
   }
 
   .stadistic-item-number{
       display: block;
       font-weight: bold;
       font-size: 1.3em;
+      color: #000000;
   }
 </style>
